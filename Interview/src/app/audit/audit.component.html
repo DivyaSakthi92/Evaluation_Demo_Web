@@ -1,0 +1,58 @@
+<h1>Hi {{currentUser.firstName}}!</h1>
+<p>You're logged in with Angular 8!!</p>
+<h3>All login audit :</h3>
+<!--not able to include indigo.css theme,because angular.json file is not present - 
+    so , while clicking dateformat select ,the options will be shown below the div-->
+<mat-form-field appearance="fill">
+    <mat-label>Choose Date format</mat-label>
+    <mat-select #selection (selectionChange) = "setDateFormat(selection)">
+      <mat-option value="1">12hr Format</mat-option>
+      <mat-option value="2">24hr Format</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<div style="  min-height: 64px;padding: 8px 24px 0;">
+    <mat-form-field style="font-size: 14px;width: 100%;">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event.target.value)" >
+    </mat-form-field>
+  </div>
+<div [hidden] = "loading"  class="mat-elevation-z8" style="background-color: white; width: 100%; text-align: center;">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort style="overflow: auto;
+max-height: 500px;width: 100%;">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="ip">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> IP Address </th>
+      <td mat-cell *matCellDef="let element"> {{element.ip}} </td>
+    </ng-container>
+    <ng-container matColumnDef="loginTime">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> LoginTime </th>
+      <td mat-cell *matCellDef="let element"> {{element.loginTime | date: dateFormatValue }} </td>
+    </ng-container>
+    <ng-container matColumnDef="logoutTime">
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header> Logout Time </th>
+      <td mat-cell *matCellDef="let element"> {{element.logoutTime | date: dateFormatValue}} </td>
+    </ng-container>
+    <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef  mat-sort-header> User </th>
+        <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator
+  #paginator
+  [pageSizeOptions]="[5, 10, 20,50,100]"
+  showFirstLastButtons
+></mat-paginator>
+</div>
+
+<div [hidden] = "!loading">
+    <div>
+        No Records found!!
+    </div>
+</div>
+  
